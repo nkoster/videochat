@@ -1,3 +1,4 @@
+const debug = true
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
@@ -15,14 +16,16 @@ app.get('/:room', (req, res) => {
 })
 
 io.on('connection', socket => {
+    debug && console.log('---connection')
     socket.on('join-room', (roomId, userId) => {
-        console.log(roomId, userId)
+        debug && console.log('---join-room', roomId, userId)
         socket.join(roomId)
         socket.to(roomId).broadcast.emit('user-connected', userId)
         socket.on('disconnect', _ => {
+            debug && console.log('---user-disconnected')
             socket.to(roomId).broadcast.emit('user-disconnected', userId)
         })
     })
 })
 
-server.listen(3333)
+server.listen(4445)
