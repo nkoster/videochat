@@ -4,8 +4,10 @@ const myPeer = new Peer(undefined, {
     port: '4444'
 })
 
-socket.emit('join-room', ROOM_ID, 10)
+myPeer.on('open', id => {
+    socket.emit('join-room', ROOM_ID, id)
+})
 
 socket.on('user-connected', userId => {
-    console.log(userId)
+    console.log('CONNECTED', userId)
 })
