@@ -1,7 +1,7 @@
 const socket = io('/')
 const myPeer = new Peer(undefined, {
-    host: '/',
-    port: '4444'
+    host: 'rtc.w3b.net',
+    port: '443'
 })
 const videoGrid = document.querySelector('#video-grid')
 const myVideo = document.createElement('video')
