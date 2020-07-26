@@ -35,22 +35,18 @@ myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id)
 })
 
-function connectToNewUser(userId, stream) {
+const connectToNewUser = (userId, stream) => {
     const call = myPeer.call(userId, stream)
     const video = document.createElement('video')
     call.on('stream', remoteVideoStream => {
         addVideoStream(video, remoteVideoStream)
     })
-    call.on('close', _ => {
-        video.remove()
-    })
+    call.on('close', _ => video.remove())
     peers[userId] = call
 }
 
-function addVideoStream(video, stream) {
+const addVideoStream = (video, stream) => {
     video.srcObject = stream
-    video.addEventListener('loadedmetadata', _ => {
-        video.play()
-    })
+    video.addEventListener('loadedmetadata', _ => video.play())
     videoGrid.append(video)
 }
