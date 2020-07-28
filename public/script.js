@@ -32,6 +32,11 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 socket.on('user-disconnected', userId => {
     console.log('DISCONNECT', userId)
     peers[userId] && peers[userId].close()
+    const videos = document.querySelectorAll('video')
+    if (videos.length > 1)
+      if (videos[1].getAttribute('id') === 'me') videos[1].remove()
+    const del = document.getElementById(userId)
+    del && del.remove()
 })
 
 myPeer.on('open', id => {
@@ -39,22 +44,24 @@ myPeer.on('open', id => {
 })
 
 const connectToNewUser = (userId, stream) => {
+    if (!userId) return
     const call = myPeer.call(userId, stream)
     const video = document.createElement('video')
     video.setAttribute('autoplay', '')
     video.setAttribute('muted', '')
     video.setAttribute('playsinline', '')
     call.on('stream', remoteVideoStream => {
-        addVideoStream(video, remoteVideoStream)
+        addVideoStream(video, remoteVideoStream, userId)
     })
     call.on('close', _ => video.remove())
     peers[userId] = call
 }
 
-const addVideoStream = (video, stream) => {
+const addVideoStream = (video, stream, userId = 'me') => {
     video.srcObject = stream
     video.setAttribute('autoplay', '')
     video.setAttribute('playsinline', '')
     video.addEventListener('loadedmetadata', _ => video.play())
     videoGrid.append(video)
+    video.setAttribute('id', userId)
 }
