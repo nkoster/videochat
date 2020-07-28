@@ -1,7 +1,11 @@
 const socket = io('/')
 const myPeer = new Peer(undefined, {
     host: 'rtc.w3b.net',
-    port: '443'
+    port: '443',
+    config: {'iceServers': [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'turn:w3b.net', username: 'peer', credential: 'peer' }
+      ]} /* Sample servers, please use appropriate ones */
 })
 const videoGrid = document.querySelector('#video-grid')
 const myVideo = document.createElement('video')
