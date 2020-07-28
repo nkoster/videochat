@@ -5,7 +5,7 @@ const myPeer = new Peer(undefined, {
     config: {'iceServers': [
         { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'turn:w3b.net', username: 'peer', credential: 'peer' }
-      ]} /* Sample servers, please use appropriate ones */
+      ]}
 })
 const videoGrid = document.querySelector('#video-grid')
 const myVideo = document.createElement('video')
