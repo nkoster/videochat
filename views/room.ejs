@@ -9,9 +9,10 @@
     <script src="peerjs.js" defer></script>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="script.js" defer></script>
-    <title>Document</title>
+    <title>Portavita SMC</title>
     <style>
         body {
+            margin: 0;
             background-color: silver;
         }
         #video-grid {
@@ -28,9 +29,41 @@
             border: 3px solid white;
             border-radius: 10px;
         }
+        header {
+            left: 0;
+            right: 0;
+            height: 50px;
+            top: 0;
+            background-color: #3A84AA;
+            border-bottom: 1px solid black;
+        }
+        #logo {
+            position: fixed;
+            left: -4px;
+            padding: 1px;
+            height: 50px;
+        }
+        #title {
+            position: fixed;
+            display: inline-block;
+            padding-bottom: 10px;
+            font-family: sans-serif;
+            font-size: 17px;
+            margin-top: 2px;
+            color: white;
+            top: 7px;
+            right: 10px;
+            line-height: 17px;
+            text-align: right;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <header>
+        <img id="logo" src="logo_single_colour_no_tag.svg" alt="Portavita Networked Health">
+        <div id="title">Portavita VC<br><span style="font-size: 12px;color:#00577B;font-weight:bold">secure medical video conferences</span></div>
+    </header>
     <div id="video-grid"></div>
 </body>
 </html>
