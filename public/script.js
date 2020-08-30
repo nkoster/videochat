@@ -4,7 +4,7 @@ const myPeer = new Peer(undefined, {
     port: '443',
     config: {'iceServers': [
         { urls: 'stun:stun.l.google.com:19302' },
-        { urls: 'turn:w3b.net', username: 'peer', credential: 'peer' }
+        { urls: 'turn:w3b.net', username: 'peerjs', credential: 'peerjs' }
       ]}
 })
 const videoGrid = document.querySelector('#video-grid')
@@ -30,17 +30,18 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 .catch(err => console.log(err.message))
 
 socket.on('user-disconnected', userId => {
-    console.log('DISCONNECT', userId)
+    console.log('DISCONNECT', userId, peers)
     peers[userId] && peers[userId].close()
     const videos = document.querySelectorAll('video')
-    if (videos.length > 1)
-      if (videos[1].getAttribute('id') === 'me') videos[1].remove()
+    // if (videos.length > 1)
+    //   if (videos[1].getAttribute('id') === 'me') videos[1].remove()
     const del = document.getElementById(userId)
     del && del.remove()
 })
 
 myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id)
+    console.log('JOIN', ROOM_ID, id, peers)
 })
 
 const connectToNewUser = (userId, stream) => {
@@ -52,12 +53,16 @@ const connectToNewUser = (userId, stream) => {
     video.setAttribute('playsinline', '')
     call.on('stream', remoteVideoStream => {
         addVideoStream(video, remoteVideoStream, userId)
+        console.log('new stream', userId, peers)
     })
-    call.on('close', _ => video.remove())
+    call.on('close', _ => {
+        video.remove()
+        console.log('close stream', userId, peers)
+    })
     peers[userId] = call
 }
 
-const addVideoStream = (video, stream, userId = 'me') => {
+const addVideoStream = (video, stream, userId) => {
     video.srcObject = stream
     video.setAttribute('autoplay', '')
     video.setAttribute('playsinline', '')
